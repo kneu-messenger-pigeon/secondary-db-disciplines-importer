@@ -3,6 +3,7 @@ module secondary-db-disciplines-importer
 go 1.19
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/joho/godotenv v1.4.0
 	github.com/kneu-messenger-pigeon/events v0.1.10
 	github.com/nakagami/firebirdsql v0.9.4

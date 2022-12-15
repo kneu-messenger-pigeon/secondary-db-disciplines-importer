@@ -8,6 +8,7 @@ import (
 	"github.com/segmentio/kafka-go"
 	"io"
 	"os"
+	"time"
 )
 
 const ExitCodeMainError = 1
@@ -37,22 +38,27 @@ func runApp(out io.Writer) error {
 		out: out,
 		reader: kafka.NewReader(
 			kafka.ReaderConfig{
-				Brokers:  []string{config.kafkaHost},
-				GroupID:  "secondary-db-disciplines-importer",
-				Topic:    "metaevents",
-				MinBytes: 10,
-				MaxBytes: 10e3,
+				Brokers:     []string{config.kafkaHost},
+				GroupID:     "secondary-db-disciplines-importer",
+				Topic:       "metaevents",
+				MinBytes:    10,
+				MaxBytes:    10e3,
+				MaxWait:     time.Second,
+				MaxAttempts: config.kafkaAttempts,
+				Dialer: &kafka.Dialer{
+					Timeout:   config.kafkaTimeout,
+					DualStack: kafka.DefaultDialer.DualStack,
+				},
 			},
 		),
 		importer: Importer{
-			out: out,
-			db:  db,
-			eventbus: Eventbus{
-				writer: &kafka.Writer{
-					Addr:     kafka.TCP(config.kafkaHost),
-					Topic:    "disciplines",
-					Balancer: &kafka.LeastBytes{},
-				},
+			out:            out,
+			db:             db,
+			writeThreshold: 100,
+			writer: &kafka.Writer{
+				Addr:     kafka.TCP(config.kafkaHost),
+				Topic:    "disciplines",
+				Balancer: &kafka.LeastBytes{},
 			},
 		},
 	}).execute()

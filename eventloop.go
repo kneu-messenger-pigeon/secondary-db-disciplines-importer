@@ -67,7 +67,9 @@ func (eventLoop EventLoop) getDatetimeRangeFromEvent(m kafka.Message) (time.Time
 		)
 
 		if err == nil {
-			return time.Date(event.Year-2, 8, 1, 0, 0, 0, 0, time.Local), time.Now()
+			now := time.Now()
+			return time.Date(event.Year-2, 8, 1, 0, 0, 0, 0, time.Local),
+				time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), 0, 0, 0, now.Location())
 		}
 	}
 

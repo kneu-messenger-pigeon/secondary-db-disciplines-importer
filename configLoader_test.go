@@ -4,13 +4,17 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"os"
+	"strconv"
 	"testing"
+	"time"
 )
 
 var expectedConfig = Config{
 	kafkaHost:             "KAFKA:9999",
 	dekanatDbDriverName:   "firebird-test",
 	secondaryDekanatDbDSN: "USER:PASSOWORD@HOST/DATABASE",
+	kafkaTimeout:          time.Second * 10,
+	kafkaAttempts:         0,
 }
 
 func TestLoadConfigFromEnvVars(t *testing.T) {
@@ -18,6 +22,7 @@ func TestLoadConfigFromEnvVars(t *testing.T) {
 		_ = os.Setenv("KAFKA_HOST", expectedConfig.kafkaHost)
 		_ = os.Setenv("DEKANAT_DB_DRIVER_NAME", expectedConfig.dekanatDbDriverName)
 		_ = os.Setenv("SECONDARY_DEKANAT_DB_DSN", expectedConfig.secondaryDekanatDbDSN)
+		_ = os.Setenv("KAFKA_TIMEOUT", strconv.Itoa(int(expectedConfig.kafkaTimeout.Seconds())))
 
 		config, err := loadConfig("")
 
@@ -48,6 +53,7 @@ func TestLoadConfigFromEnvVars(t *testing.T) {
 		_ = os.Setenv("DEKANAT_DB_DRIVER_NAME", "")
 		_ = os.Setenv("SECONDARY_DEKANAT_DB_DSN", "")
 		_ = os.Setenv("KAFKA_HOST", "")
+		_ = os.Setenv("KAFKA_TIMEOUT", "")
 
 		config, err := loadConfig("")
 
