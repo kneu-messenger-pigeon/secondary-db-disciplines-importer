@@ -1,0 +1,75 @@
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"github.com/kneu-messenger-pigeon/events"
+	"github.com/segmentio/kafka-go"
+	"io"
+	"time"
+)
+
+type EventLoop struct {
+	out      io.Writer
+	reader   events.ReaderInterface
+	importer ImporterInterface
+}
+
+func (eventLoop EventLoop) execute() (err error) {
+	for {
+		var m kafka.Message
+		m, err = eventLoop.reader.FetchMessage(context.Background())
+		if err != nil {
+			return
+		}
+
+		startDatetime, endDatetime := eventLoop.getDatetimeRangeFromEvent(m)
+		if startDatetime.IsZero() {
+			fmt.Fprintln(eventLoop.out, "Zero start time, skip event")
+		} else {
+			err = eventLoop.importer.execute(startDatetime, endDatetime)
+			if err != nil {
+				return err
+			}
+		}
+
+		err = eventLoop.reader.CommitMessages(context.Background(), m)
+		if err != nil {
+			return
+		}
+	}
+}
+
+func (eventLoop EventLoop) getDatetimeRangeFromEvent(m kafka.Message) (time.Time, time.Time) {
+	var err error
+	switch string(m.Key) {
+	case events.SecondaryDbLoadedEventName:
+		event := events.SecondaryDbLoadedEvent{}
+		err = json.Unmarshal(m.Value, &event)
+
+		fmt.Fprintf(
+			eventLoop.out, "message at topic/partition/offset %v/%v/%v: %s = %v (err: %v) \n",
+			m.Topic, m.Partition, m.Offset, string(m.Key), event, err,
+		)
+
+		if err == nil {
+			return event.PreviousSecondaryDatabaseDatetime, event.CurrentSecondaryDatabaseDatetime
+		}
+
+	case events.CurrentYearEventName:
+		event := events.CurrentYearEvent{}
+		err = json.Unmarshal(m.Value, &event)
+
+		fmt.Fprintf(
+			eventLoop.out, "message at topic/partition/offset %v/%v/%v: %s = %v (err: %v) \n",
+			m.Topic, m.Partition, m.Offset, string(m.Key), event, err,
+		)
+
+		if err == nil {
+			return time.Date(event.Year-2, 8, 1, 0, 0, 0, 0, time.Local), time.Now()
+		}
+	}
+
+	return time.Time{}, time.Time{}
+}
