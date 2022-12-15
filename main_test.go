@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -42,7 +41,7 @@ func TestRunApp(t *testing.T) {
 
 		var out bytes.Buffer
 		err := runApp(&out)
-		fmt.Println(err)
+
 		assert.Error(t, err, "Expected for error, got %s")
 		assert.ErrorContains(t, err, "failed to dial: failed to open connection t")
 	})

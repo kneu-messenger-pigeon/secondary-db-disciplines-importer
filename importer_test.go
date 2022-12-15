@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/kneu-messenger-pigeon/events"
 	"github.com/segmentio/kafka-go"
@@ -190,7 +189,6 @@ func TestImporterExecute(t *testing.T) {
 		}
 
 		err = importer.execute(startDatetime, endDatetime)
-		fmt.Println(err)
 
 		assert.Error(t, err)
 		assert.ErrorContains(t, err, "sql: Scan error on column index ")
@@ -243,7 +241,6 @@ func TestImporterExecute(t *testing.T) {
 		}
 
 		err = importer.execute(startDatetime, endDatetime)
-		fmt.Println(err)
 
 		assert.Error(t, err)
 		assert.Equal(t, expectedError, err)

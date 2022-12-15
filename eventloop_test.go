@@ -20,8 +20,8 @@ func TestEventLoopExecute(t *testing.T) {
 	breakLoopError := errors.New("breakLoop")
 	matchContext := mock.MatchedBy(func(ctx context.Context) bool { return true })
 
-	expectedStartDatetime := time.Date(2023, 4, 10, 4, 0, 0, 0, time.Local)
-	expectedEndDatetime := time.Date(2023, 4, 11, 4, 0, 0, 0, time.Local)
+	expectedStartDatetime := time.Date(2023, 4, 10, 4, 0, 0, 0, time.UTC)
+	expectedEndDatetime := time.Date(2023, 4, 11, 4, 0, 0, 0, time.UTC)
 
 	event := events.SecondaryDbLoadedEvent{
 		PreviousSecondaryDatabaseDatetime: expectedStartDatetime,
@@ -181,8 +181,8 @@ func TestGetDatetimeRangeFromEvent(t *testing.T) {
 	}
 
 	t.Run("Check SecondaryDbLoadedEvent", func(t *testing.T) {
-		expectedStartDatetime := time.Date(2023, 4, 10, 4, 0, 0, 0, time.Local)
-		expectedEndDatetime := time.Date(2023, 4, 11, 4, 0, 0, 0, time.Local)
+		expectedStartDatetime := time.Date(2023, 4, 10, 4, 0, 0, 0, time.UTC)
+		expectedEndDatetime := time.Date(2023, 4, 11, 4, 0, 0, 0, time.UTC)
 
 		event := events.SecondaryDbLoadedEvent{
 			PreviousSecondaryDatabaseDatetime: expectedStartDatetime,
