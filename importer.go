@@ -56,16 +56,15 @@ func (importer Importer) execute(startDatetime time.Time, endDatetime time.Time)
 		return err == nil
 	}
 
-	var id int
-	var name string
+	var event events.DisciplineEvent
 	i := 0
 	fmt.Fprintf(importer.out, "Start import: ")
 	for rows.Next() && writeMessages(importer.writeThreshold) {
 		i++
-		err = rows.Scan(&id, &name)
+		err = rows.Scan(&event.Id, &event.Name)
 		if err == nil {
-			name = strings.Trim(name, " ")
-			payload, _ := json.Marshal(events.DisciplineEvent{Id: id, Name: name})
+			event.Name = strings.Trim(event.Name, " ")
+			payload, _ := json.Marshal(event)
 			messages = append(messages, kafka.Message{
 				Key:   []byte(events.DisciplineEventName),
 				Value: payload,
