@@ -11,6 +11,10 @@ github.com/klauspost/compress v1.15.9 h1:wKRjX6JRtDdrE9qwa4b/Cip7ACOshUI4smpCQan
 github.com/klauspost/compress v1.15.9/go.mod h1:PhcZ0MbTNciWF3rruxRgKxI5NkcHHrHUDtV4Yw2GlzU=
 github.com/kneu-messenger-pigeon/events v0.1.10 h1:vg/mxvreLyEjgLq9sMv0+EjQ7/mv+bxR9f/UfeXsTAU=
 github.com/kneu-messenger-pigeon/events v0.1.10/go.mod h1:tGQnwj1PSljThIbRVoWRYXeiJkVzHQ2LrdV62QRffpg=
+github.com/kneu-messenger-pigeon/events v0.1.11 h1:Mwo1LrcZMqYv4QVKOuefFmaj68LOkG5hy+5Hb2PpJkE=
+github.com/kneu-messenger-pigeon/events v0.1.11/go.mod h1:yPgqpO/+XVOZmTdH8BB4wbE+2/keLNhjorMVzJwHQL8=
+github.com/kneu-messenger-pigeon/events v0.1.12 h1:+FcX0+i1KQ49qUQmGDAReB2JPJ4bbm9EW6DIU3h5+O0=
+github.com/kneu-messenger-pigeon/events v0.1.12/go.mod h1:yPgqpO/+XVOZmTdH8BB4wbE+2/keLNhjorMVzJwHQL8=
 github.com/nakagami/firebirdsql v0.9.4 h1:dBgBksQijBPYroFLhu4NdOdtASKtMSgaTaOJ4UnlYhw=
 github.com/nakagami/firebirdsql v0.9.4/go.mod h1:IA0km/Oa+dvm7arlZK5lRCQJ4BHC3WUAOybfTNeXPvA=
 github.com/pierrec/lz4/v4 v4.1.15 h1:MO0/ucJhngq7299dKLwIMtgTfbkoSPF6AoMYDd8Q4q0=

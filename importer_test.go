@@ -50,10 +50,10 @@ func TestImporterExecute(t *testing.T) {
 		writer := events.NewMockWriterInterface(t)
 
 		var expectedName string
-		messageArgumentMatcher := func(expectedIds ...int) func(kafka.Message) bool {
+		messageArgumentMatcher := func(expectedIds ...uint) func(kafka.Message) bool {
 			return func(message kafka.Message) bool {
 				err = json.Unmarshal(message.Value, &event)
-				expectedName = "name " + strconv.Itoa(event.Id)
+				expectedName = "name " + strconv.FormatUint(uint64(event.Id), 10)
 
 				return assert.Equal(t, events.DisciplineEventName, string(message.Key)) &&
 					assert.NoErrorf(t, err, "Failed to parse as DisciplineEvent: %v", message) &&
@@ -147,7 +147,7 @@ func TestImporterExecute(t *testing.T) {
 			log.Fatalf("an error '%s' was not expected when opening a mock database connection", err)
 		}
 
-		expectedId := 20
+		expectedId := uint(20)
 		expectedName := "name test disc"
 
 		rows := sqlmock.NewRows(expectedColumns).AddRow(
