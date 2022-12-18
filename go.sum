@@ -15,6 +15,8 @@ github.com/kneu-messenger-pigeon/events v0.1.11 h1:Mwo1LrcZMqYv4QVKOuefFmaj68LOk
 github.com/kneu-messenger-pigeon/events v0.1.11/go.mod h1:yPgqpO/+XVOZmTdH8BB4wbE+2/keLNhjorMVzJwHQL8=
 github.com/kneu-messenger-pigeon/events v0.1.12 h1:+FcX0+i1KQ49qUQmGDAReB2JPJ4bbm9EW6DIU3h5+O0=
 github.com/kneu-messenger-pigeon/events v0.1.12/go.mod h1:yPgqpO/+XVOZmTdH8BB4wbE+2/keLNhjorMVzJwHQL8=
+github.com/kneu-messenger-pigeon/events v0.1.15 h1:s1bDvz4bql7SDt/U8OBXOiktxUFIUWwX5SwgfaiWRQA=
+github.com/kneu-messenger-pigeon/events v0.1.15/go.mod h1:yPgqpO/+XVOZmTdH8BB4wbE+2/keLNhjorMVzJwHQL8=
 github.com/nakagami/firebirdsql v0.9.4 h1:dBgBksQijBPYroFLhu4NdOdtASKtMSgaTaOJ4UnlYhw=
 github.com/nakagami/firebirdsql v0.9.4/go.mod h1:IA0km/Oa+dvm7arlZK5lRCQJ4BHC3WUAOybfTNeXPvA=
 github.com/pierrec/lz4/v4 v4.1.15 h1:MO0/ucJhngq7299dKLwIMtgTfbkoSPF6AoMYDd8Q4q0=
