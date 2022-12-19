@@ -51,7 +51,7 @@ func runApp(out io.Writer) error {
 			kafka.ReaderConfig{
 				Brokers:     []string{config.kafkaHost},
 				GroupID:     "secondary-db-disciplines-importer",
-				Topic:       "metaevents",
+				Topic:       "meta_events",
 				MinBytes:    10,
 				MaxBytes:    10e3,
 				MaxWait:     time.Second,
@@ -65,9 +65,9 @@ func runApp(out io.Writer) error {
 	}
 
 	defer func() {
-		_ = db.Close()
 		_ = eventLoop.reader.Close()
 		_ = importer.writer.Close()
+		_ = db.Close()
 	}()
 
 	return eventLoop.execute()
