@@ -33,7 +33,7 @@ func runApp(out io.Writer) error {
 		return errors.New("Wrong connection configuration for secondary Dekanat DB: " + err.Error())
 	}
 
-	importer := Importer{
+	importer := &Importer{
 		out:            out,
 		db:             db,
 		writeThreshold: 100,
@@ -44,7 +44,7 @@ func runApp(out io.Writer) error {
 		},
 	}
 
-	eventLoop := EventLoop{
+	eventLoop := &EventLoop{
 		out:      out,
 		importer: importer,
 		reader: kafka.NewReader(
