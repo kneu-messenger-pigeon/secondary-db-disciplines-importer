@@ -107,10 +107,10 @@ func TestEventLoopExecute(t *testing.T) {
 	})
 
 	t.Run("process one ignore message", func(t *testing.T) {
-		ignoreEvent := events.SecondaryDbScoreBulkProcessedEvent{}
+		ignoreEvent := events.SecondaryDbScoreProcessedEvent{}
 		payload, _ = json.Marshal(ignoreEvent)
 		message = kafka.Message{
-			Key:   []byte(events.SecondaryDbScoreBulkProcessedEventName),
+			Key:   []byte(events.SecondaryDbScoreProcessedEventName),
 			Value: payload,
 		}
 
@@ -139,10 +139,10 @@ func TestEventLoopExecute(t *testing.T) {
 	})
 
 	t.Run("process one ignore message", func(t *testing.T) {
-		event := events.SecondaryDbScoreBulkProcessedEvent{}
+		event := events.SecondaryDbScoreProcessedEvent{}
 		payload, _ := json.Marshal(event)
 		message := kafka.Message{
-			Key:   []byte(events.SecondaryDbScoreBulkProcessedEventName),
+			Key:   []byte(events.SecondaryDbScoreProcessedEventName),
 			Value: payload,
 		}
 
@@ -224,10 +224,10 @@ func TestGetDatetimeRangeFromEvent(t *testing.T) {
 	})
 
 	t.Run("Check Ignore Event", func(t *testing.T) {
-		event := events.SecondaryDbScoreBulkProcessedEvent{}
+		event := events.SecondaryDbScoreProcessedEvent{}
 		payload, _ := json.Marshal(event)
 		message := kafka.Message{
-			Key:   []byte(events.SecondaryDbScoreBulkProcessedEventName),
+			Key:   []byte(events.SecondaryDbScoreProcessedEventName),
 			Value: payload,
 		}
 

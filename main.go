@@ -32,10 +32,21 @@ func runApp(out io.Writer) error {
 	if err != nil {
 		return errors.New("Wrong connection configuration for secondary Dekanat DB: " + err.Error())
 	}
-	defer db.Close()
 
-	return (EventLoop{
-		out: out,
+	importer := Importer{
+		out:            out,
+		db:             db,
+		writeThreshold: 100,
+		writer: &kafka.Writer{
+			Addr:     kafka.TCP(config.kafkaHost),
+			Topic:    "disciplines",
+			Balancer: &kafka.LeastBytes{},
+		},
+	}
+
+	eventLoop := EventLoop{
+		out:      out,
+		importer: importer,
 		reader: kafka.NewReader(
 			kafka.ReaderConfig{
 				Brokers:     []string{config.kafkaHost},
@@ -51,17 +62,15 @@ func runApp(out io.Writer) error {
 				},
 			},
 		),
-		importer: Importer{
-			out:            out,
-			db:             db,
-			writeThreshold: 100,
-			writer: &kafka.Writer{
-				Addr:     kafka.TCP(config.kafkaHost),
-				Topic:    "disciplines",
-				Balancer: &kafka.LeastBytes{},
-			},
-		},
-	}).execute()
+	}
+
+	defer func() {
+		_ = db.Close()
+		_ = eventLoop.reader.Close()
+		_ = importer.writer.Close()
+	}()
+
+	return eventLoop.execute()
 }
 
 func handleExitError(errStream io.Writer, err error) int {
