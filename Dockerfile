@@ -19,6 +19,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -tags=nomsgp
 # build a small image
 FROM alpine
 
+ENV TZ=Europe/Kyiv
 RUN apk add tzdata
 
 COPY --from=builder /etc/passwd.nobody /etc/passwd
