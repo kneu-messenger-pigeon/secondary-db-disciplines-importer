@@ -28,11 +28,11 @@ func (eventLoop EventLoop) execute() (err error) {
 			return
 		}
 
-		startDatetime, endDatetime := eventLoop.getDatetimeRangeFromEvent(m)
+		startDatetime, endDatetime, year := eventLoop.getDatetimeRangeFromEvent(m)
 		if startDatetime.IsZero() {
 			fmt.Fprintln(eventLoop.out, "Zero start time, skip event")
 		} else {
-			err = eventLoop.importer.execute(startDatetime, endDatetime)
+			err = eventLoop.importer.execute(startDatetime, endDatetime, year)
 			if err != nil {
 				return err
 			}
@@ -45,7 +45,7 @@ func (eventLoop EventLoop) execute() (err error) {
 	}
 }
 
-func (eventLoop EventLoop) getDatetimeRangeFromEvent(m kafka.Message) (time.Time, time.Time) {
+func (eventLoop EventLoop) getDatetimeRangeFromEvent(m kafka.Message) (time.Time, time.Time, int) {
 	var err error
 	switch string(m.Key) {
 	case events.SecondaryDbLoadedEventName:
@@ -58,7 +58,7 @@ func (eventLoop EventLoop) getDatetimeRangeFromEvent(m kafka.Message) (time.Time
 		)
 
 		if err == nil {
-			return event.PreviousSecondaryDatabaseDatetime, event.CurrentSecondaryDatabaseDatetime
+			return event.PreviousSecondaryDatabaseDatetime, event.CurrentSecondaryDatabaseDatetime, event.Year
 		}
 
 	case events.CurrentYearEventName:
@@ -73,9 +73,10 @@ func (eventLoop EventLoop) getDatetimeRangeFromEvent(m kafka.Message) (time.Time
 		if err == nil {
 			now := time.Now()
 			return time.Date(event.Year-2, 8, 1, 0, 0, 0, 0, time.Local),
-				time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), 0, 0, 0, now.Location())
+				time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), 0, 0, 0, now.Location()),
+				event.Year
 		}
 	}
 
-	return time.Time{}, time.Time{}
+	return time.Time{}, time.Time{}, 0
 }

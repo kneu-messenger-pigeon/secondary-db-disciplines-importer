@@ -15,7 +15,7 @@ import (
 const dateFormat = "2006-01-02 15:04:05"
 
 type ImporterInterface interface {
-	execute(startDatetime time.Time, endDatetime time.Time) error
+	execute(startDatetime time.Time, endDatetime time.Time, year int) error
 }
 
 type Importer struct {
@@ -25,7 +25,7 @@ type Importer struct {
 	writeThreshold int
 }
 
-func (importer Importer) execute(startDatetime time.Time, endDatetime time.Time) (err error) {
+func (importer Importer) execute(startDatetime time.Time, endDatetime time.Time, year int) (err error) {
 	if err = importer.db.Ping(); err != nil {
 		return
 	}
@@ -64,6 +64,7 @@ func (importer Importer) execute(startDatetime time.Time, endDatetime time.Time)
 		err = rows.Scan(&event.Id, &event.Name)
 		if err == nil {
 			event.Name = strings.Trim(event.Name, " ")
+			event.Year = year
 			payload, _ := json.Marshal(event)
 			messages = append(messages, kafka.Message{
 				Key:   []byte(events.DisciplineEventName),

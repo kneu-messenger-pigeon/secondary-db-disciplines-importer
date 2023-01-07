@@ -23,6 +23,7 @@ var expectedColumns = []string{"ID", "PREDMET"}
 func TestImporterExecute(t *testing.T) {
 	var startDatetime time.Time
 	var endDatetime time.Time
+	var year = 2030
 	var out bytes.Buffer
 	var event events.DisciplineEvent
 
@@ -64,7 +65,8 @@ func TestImporterExecute(t *testing.T) {
 					assert.Equal(
 						t, expectedName, event.Name,
 						"Expected name: %s, actual: %s", expectedName, event.Name,
-					)
+					) &&
+					assert.Equal(t, year, event.Year)
 			}
 		}
 
@@ -84,7 +86,7 @@ func TestImporterExecute(t *testing.T) {
 			writeThreshold: 3,
 		}
 
-		err = importer.execute(startDatetime, endDatetime)
+		err = importer.execute(startDatetime, endDatetime, year)
 
 		assert.NoError(t, err)
 
@@ -127,7 +129,7 @@ func TestImporterExecute(t *testing.T) {
 			writeThreshold: 3,
 		}
 
-		err = importer.execute(startDatetime, endDatetime)
+		err = importer.execute(startDatetime, endDatetime, year)
 
 		assert.Error(t, err)
 		assert.Equal(t, expectedError, err)
@@ -188,7 +190,7 @@ func TestImporterExecute(t *testing.T) {
 			writeThreshold: 3,
 		}
 
-		err = importer.execute(startDatetime, endDatetime)
+		err = importer.execute(startDatetime, endDatetime, year)
 
 		assert.Error(t, err)
 		assert.ErrorContains(t, err, "sql: Scan error on column index ")
@@ -240,7 +242,7 @@ func TestImporterExecute(t *testing.T) {
 			writeThreshold: 1,
 		}
 
-		err = importer.execute(startDatetime, endDatetime)
+		err = importer.execute(startDatetime, endDatetime, year)
 
 		assert.Error(t, err)
 		assert.Equal(t, expectedError, err)
@@ -265,7 +267,7 @@ func TestImporterExecute(t *testing.T) {
 			writeThreshold: 3,
 		}
 
-		err := importer.execute(startDatetime, endDatetime)
+		err := importer.execute(startDatetime, endDatetime, year)
 
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
