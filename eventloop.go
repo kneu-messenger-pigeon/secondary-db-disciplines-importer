@@ -52,10 +52,7 @@ func (eventLoop EventLoop) getDatetimeRangeFromEvent(m kafka.Message) (time.Time
 		event := events.SecondaryDbLoadedEvent{}
 		err = json.Unmarshal(m.Value, &event)
 
-		fmt.Fprintf(
-			eventLoop.out, "message at topic/partition/offset %v/%v/%v: %s = %v (err: %v) \n",
-			m.Topic, m.Partition, m.Offset, string(m.Key), event, err,
-		)
+		fmt.Fprintf(eventLoop.out, "Received Event %T (err: %v) \n", event, err)
 
 		if err == nil {
 			return event.PreviousSecondaryDatabaseDatetime, event.CurrentSecondaryDatabaseDatetime, event.Year
