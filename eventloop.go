@@ -30,7 +30,7 @@ func (eventLoop EventLoop) execute() (err error) {
 
 		startDatetime, endDatetime, year := eventLoop.getDatetimeRangeFromEvent(m)
 		if startDatetime.IsZero() {
-			fmt.Fprintln(eventLoop.out, "Zero start time, skip event")
+			fmt.Fprintf(eventLoop.out, "Zero start time, skip event %s\n", m.Key)
 		} else {
 			err = eventLoop.importer.execute(startDatetime, endDatetime, year)
 			if err != nil {
