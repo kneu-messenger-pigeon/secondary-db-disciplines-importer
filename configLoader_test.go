@@ -23,6 +23,7 @@ func TestLoadConfigFromEnvVars(t *testing.T) {
 		_ = os.Setenv("DEKANAT_DB_DRIVER_NAME", expectedConfig.dekanatDbDriverName)
 		_ = os.Setenv("SECONDARY_DEKANAT_DB_DSN", expectedConfig.secondaryDekanatDbDSN)
 		_ = os.Setenv("KAFKA_TIMEOUT", strconv.Itoa(int(expectedConfig.kafkaTimeout.Seconds())))
+		_ = os.Setenv("KAFKA_ATTEMPTS", strconv.Itoa(expectedConfig.kafkaAttempts))
 
 		config, err := loadConfig("")
 
@@ -54,6 +55,7 @@ func TestLoadConfigFromEnvVars(t *testing.T) {
 		_ = os.Setenv("SECONDARY_DEKANAT_DB_DSN", "")
 		_ = os.Setenv("KAFKA_HOST", "")
 		_ = os.Setenv("KAFKA_TIMEOUT", "")
+		_ = os.Setenv("KAFKA_ATTEMPTS", "")
 
 		config, err := loadConfig("")
 
